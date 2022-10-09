@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "django-training"
+version = "0.1.0"
+description = ""
+authors = ["AhmedNasserG <ahmednasser217217@gmail.com>"]
+readme = "README.md"
+packages = [{include = "django_training"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+Django = "^4.1.2"
+
+[tool.poetry.group.dev.dependencies]
+autopep8 = "^1.7.0"
+flake8 = "^5.0.4"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
