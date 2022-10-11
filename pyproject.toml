@@ -9,6 +9,8 @@ packages = [{include = "django_training"}]
 [tool.poetry.dependencies]
 python = "^3.9"
 Django = "^4.1.2"
+tzlocal = "^4.2"
+django-dotenv = "^1.4.2"
 
 [tool.poetry.group.dev.dependencies]
 autopep8 = "^1.7.0"
