@@ -84,9 +84,10 @@ Album.objects.all().count()
 
 ```python
 for artist in Artist.objects.all():
-    print(artist.album_set.all())
+    artist.album_set.all()
 
-# TODO: Add another way
+for artist in Artist.objects.all():
+    Album.objects.filter(artist=artist)
 ```
 
 ### 11. list down all albums ordered by cost then by name (cost has the higher priority)
