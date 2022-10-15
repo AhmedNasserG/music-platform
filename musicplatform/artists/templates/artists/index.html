@@ -1,1 +1,20 @@
-Artists Index
+{%for artist in data%}
+<ul>
+	{%for key, value in artist.items%} {%if key != 'albums'%}
+	<li>{{key}}: {{value}}</li>
+	{% else %}
+	<li>
+		{{key}}: {%for album in value%}
+		<ul>
+			{%for key, value in album.items%}
+
+			<li>{{key}}: {{value}}</li>
+
+			{%endfor%}
+		</ul>
+		<br />
+		{%endfor%}
+	</li>
+	{%endif%} {%endfor%}
+</ul>
+{%endfor%}

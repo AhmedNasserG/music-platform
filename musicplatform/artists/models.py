@@ -1,5 +1,6 @@
 from django.db import models
 from django.db.models import Count, Q
+from typing import Dict
 
 
 class ArtistManager(models.Manager):
@@ -18,3 +19,16 @@ class Artist(models.Model):
 
     def __str__(self):
         return self.stage_name
+
+    def preview(self) -> Dict:
+        return {
+            'id': self.id,
+            'stage_name': self.stage_name,
+            'social_media_link': self.social_media_link,
+            'approved_albums': self.approved_albums,
+            'albums': [album.preview() for album in self.album_set.all()],
+        }
+
+    @classmethod
+    def preview_all(cls) -> Dict:
+        return [artist.preview() for artist in cls.objects.all()]

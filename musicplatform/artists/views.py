@@ -1,10 +1,12 @@
 from django.shortcuts import HttpResponseRedirect, render
 
 from .forms import ArtistForm
+from .models import Artist
 
 
 def index(request):
-    return render(request, 'artists/index.html')
+    data = Artist.preview_all()
+    return render(request, 'artists/index.html', {'data': data})
 
 
 def create(request):
