@@ -1,20 +1,29 @@
 from django.shortcuts import HttpResponseRedirect, render
+from django.views import View
 
 from .forms import AlbumForm
 from .models import Album
 
 
-def index(request):
-    data = Album.preview_all()
-    return render(request, 'albums/index.html', {'data': data})
+class AlbumIndexView(View):
+    tempalate_name = 'albums/index.html'
+
+    def get(self, request):
+        data = Album.preview_all()
+        return render(request, self.tempalate_name, {'data': data})
 
 
-def create(request):
-    if request.method == 'POST':
-        form = AlbumForm(request.POST)
+class AlbumFormView(View):
+    form_class = AlbumForm
+    template_name = 'albums/create.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/artists/')
-    else:
-        form = AlbumForm()
-    return render(request, 'albums/create.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
