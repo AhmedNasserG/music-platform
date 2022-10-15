@@ -1,10 +1,12 @@
 from django.shortcuts import HttpResponseRedirect, render
 
 from .forms import AlbumForm
+from .models import Album
 
 
 def index(request):
-    return render(request, 'albums/index.html')
+    data = Album.preview_all()
+    return render(request, 'albums/index.html', {'data': data})
 
 
 def create(request):
