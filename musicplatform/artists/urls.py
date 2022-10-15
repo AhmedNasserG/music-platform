@@ -5,6 +5,6 @@ from . import views
 app_name = 'artists'
 
 urlpatterns = [
-    path('', views.index, name='index'),
-    path('create/', views.create, name='create'),
+    path('', views.ArtistIndexView.as_view(), name='index'),
+    path('create/', views.ArtistFormView.as_view(), name='create'),
 ]

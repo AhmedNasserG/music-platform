@@ -1,21 +1,30 @@
 from django.shortcuts import HttpResponseRedirect, render
+from django.views import View
+
 
 from .forms import ArtistForm
 from .models import Artist
 
 
-def index(request):
-    data = Artist.preview_all()
-    return render(request, 'artists/index.html', {'data': data})
+class ArtistIndexView(View):
+    tempalate_name = 'artists/index.html'
+
+    def get(self, request):
+        data = Artist.preview_all()
+        return render(request, self.tempalate_name, {'data': data})
 
 
-def create(request):
-    if request.method == 'POST':
-        form = ArtistForm(request.POST)
-        print(form.errors)
+class ArtistFormView(View):
+    form_class = ArtistForm
+    template_name = 'artists/create.html'
+
+    def get(self, request):
+        form = self.form_class(None)
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             return HttpResponseRedirect('/artists/')
-    else:
-        form = ArtistForm()
-    return render(request, 'artists/create.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
