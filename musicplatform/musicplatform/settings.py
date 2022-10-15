@@ -35,6 +35,7 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
+    'accounts.apps.AccountsConfig',
     'artists.apps.ArtistsConfig',
     'albums.apps.AlbumsConfig',
     'django.contrib.admin',
