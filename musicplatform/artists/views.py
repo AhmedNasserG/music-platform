@@ -1,9 +1,9 @@
 from django.shortcuts import HttpResponseRedirect, render
 from django.views import View
 
-
 from .forms import ArtistForm
 from .models import Artist
+from accounts.views import LoginRequieredView
 
 
 class ArtistIndexView(View):
@@ -14,7 +14,7 @@ class ArtistIndexView(View):
         return render(request, self.tempalate_name, {'data': data})
 
 
-class ArtistFormView(View):
+class ArtistFormView(LoginRequieredView):
     form_class = ArtistForm
     template_name = 'artists/create.html'
 
