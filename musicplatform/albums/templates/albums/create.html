@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Document</title>
+	</head>
+	<body>
+		<center>
+			<h1>Add Album</h1>
+			<br />
+			<form action="" method="POST">
+				{% csrf_token %} {% for field in form %}
+				<div class="fieldWrapper">
+					{{ field.label_tag }} {{ field }}
+					<br />
+					{% for error in field.errors %}
+					<p style="color: red">{{error }}</p>
+					{% endfor %}
+				</div>
+				{% endfor %}
+				<br />
+				<input type="submit" value="Add Album" />
+			</form>
+		</center>
+	</body>
+</html>

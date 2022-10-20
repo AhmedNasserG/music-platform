@@ -1,1 +1,9 @@
-Album Index
+{%for album in data%}
+<ul>
+	{%for key, value in album.items%}
+
+	<li>{{key}}: {{value}}</li>
+
+	{%endfor%}
+</ul>
+{%endfor%}
