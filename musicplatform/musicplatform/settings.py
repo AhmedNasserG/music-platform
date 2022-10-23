@@ -35,11 +35,12 @@ if not DEBUG:
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts.apps.AccountsConfig',
     'artists.apps.ArtistsConfig',
     'albums.apps.AlbumsConfig',
+    'users.apps.UsersConfig',
     'imagekit',
     'rest_framework',
+    'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -107,6 +108,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = "users.User"
 
 
 # Internationalization

@@ -3,7 +3,6 @@ from django.views import View
 
 from .forms import AlbumForm
 from .models import Album
-from accounts.views import LoginRequieredView
 
 
 class AlbumIndexView(View):
@@ -14,7 +13,7 @@ class AlbumIndexView(View):
         return render(request, self.tempalate_name, {'data': data})
 
 
-class AlbumFormView(LoginRequieredView):
+class AlbumFormView(View):
     form_class = AlbumForm
     template_name = 'albums/create.html'
 
