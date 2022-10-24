@@ -1,11 +1,8 @@
-from django.shortcuts import render
-from rest_framework import generics
-from rest_framework.permissions import AllowAny
-from knox.models import AuthToken
+from rest_framework import generics, permissions
 from rest_framework.response import Response
+from knox.models import AuthToken
 
 from users.serializers import UserSerializer
-
 from .serializers import RegisterSerializer, LoginSerializer
 
 
@@ -34,3 +31,13 @@ class LoginUserAPIView(generics.GenericAPIView):
             "token": AuthToken.objects.create(user)[1],
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
         })
+
+
+class LogoutUserAPIView(generics.GenericAPIView):
+    permission_classes = [
+        permissions.IsAuthenticated
+    ]
+
+    def post(self, request):
+        AuthToken.objects.filter(user=request.user).delete()
+        return Response({"message": "Logged out successfully."})
