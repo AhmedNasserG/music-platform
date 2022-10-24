@@ -1,30 +1,19 @@
-from django.shortcuts import HttpResponseRedirect, render
-from django.views import View
+from rest_framework.response import Response
+from rest_framework.views import APIView
 
-from .forms import ArtistForm
 from .models import Artist
-from accounts.views import LoginRequieredView
+from .serializers import ArtistSerializer
 
 
-class ArtistIndexView(View):
-    tempalate_name = 'artists/index.html'
-
+class ArtistList(APIView):
     def get(self, request):
-        data = Artist.preview_all()
-        return render(request, self.tempalate_name, {'data': data})
-
-
-class ArtistFormView(LoginRequieredView):
-    form_class = ArtistForm
-    template_name = 'artists/create.html'
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
+        artists = Artist.preview_all()
+        serializer = ArtistSerializer(artists, many=True)
+        return Response(serializer.data)
 
     def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/artists/')
-        return render(request, self.template_name, {'form': form})
+        serializer = ArtistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=201)
+        return Response(serializer.errors, status=400)
