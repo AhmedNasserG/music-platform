@@ -38,8 +38,10 @@ INSTALLED_APPS = [
     'artists.apps.ArtistsConfig',
     'albums.apps.AlbumsConfig',
     'users.apps.UsersConfig',
+    'authentication.apps.AuthenticationConfig',
     'imagekit',
     'rest_framework',
+    'knox',
     'django_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -110,6 +112,10 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 AUTH_USER_MODEL = "users.User"
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': ('knox.auth.TokenAuthentication', ),
+}
 
 
 # Internationalization
