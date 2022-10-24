@@ -1,5 +1,9 @@
 from django.db import models
+from django.core.validators import FileExtensionValidator
 from model_utils.models import TimeStampedModel
+from imagekit.models import ImageSpecField
+
+
 from typing import Dict
 
 from artists.models import Artist
@@ -29,3 +33,17 @@ class Album(TimeStampedModel):
     @classmethod
     def preview_all(cls) -> Dict:
         return [album.preview() for album in cls.objects.all()]
+
+
+class Song(models.Model):
+    album = models.ForeignKey(Album, on_delete=models.CASCADE)
+    name = models.CharField(max_length=150, blank=True, default=album.name)
+    image = models.ImageField(upload_to='songs/images/')
+    thumbnail = ImageSpecField(
+        source='image',
+        format='JPEG',
+    )
+    audio = models.FileField(
+        upload_to='songs/audio/',
+        validators=[FileExtensionValidator(['mp3', 'wav'])]
+    )
