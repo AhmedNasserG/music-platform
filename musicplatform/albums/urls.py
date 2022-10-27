@@ -5,6 +5,6 @@ from . import views
 app_name = 'albums'
 
 urlpatterns = [
-    path('', views.AlbumIndexView.as_view(), name='index'),
-    path('create/', views.AlbumFormView.as_view(), name='create'),
+    path('', views.AlbumViewSet.as_view(
+        {'get': 'list', 'post': 'create'}), name='index'),
 ]

@@ -3,9 +3,6 @@ from django.core.validators import FileExtensionValidator
 from model_utils.models import TimeStampedModel
 from imagekit.models import ImageSpecField
 
-
-from typing import Dict
-
 from artists.models import Artist
 
 
@@ -19,20 +16,6 @@ class Album(TimeStampedModel):
 
     def __str__(self):
         return self.name
-
-    def preview(self) -> Dict:
-        return {
-            'id': self.id,
-            'name': self.name,
-            'artist': self.artist.stage_name,
-            'release_datetime': self.release_datetime,
-            'cost': self.cost,
-            'reviewed_by_admin': self.reviewed_by_admin,
-        }
-
-    @classmethod
-    def preview_all(cls) -> Dict:
-        return [album.preview() for album in cls.objects.all()]
 
 
 class Song(models.Model):

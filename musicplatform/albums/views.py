@@ -1,29 +1,11 @@
-from django.shortcuts import HttpResponseRedirect, render
-from django.views import View
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.viewsets import ModelViewSet
 
-from .forms import AlbumForm
 from .models import Album
+from .serializers import AlbumSerializer
 
 
-class AlbumIndexView(View):
-    tempalate_name = 'albums/index.html'
-
-    def get(self, request):
-        data = Album.preview_all()
-        return render(request, self.tempalate_name, {'data': data})
-
-
-class AlbumFormView(View):
-    form_class = AlbumForm
-    template_name = 'albums/create.html'
-
-    def get(self, request):
-        form = self.form_class(None)
-        return render(request, self.template_name, {'form': form})
-
-    def post(self, request):
-        form = self.form_class(request.POST)
-        if form.is_valid():
-            form.save()
-            return HttpResponseRedirect('/artists/')
-        return render(request, self.template_name, {'form': form})
+class AlbumViewSet(ModelViewSet):
+    serializer_class = AlbumSerializer
+    queryset = Album.objects.all()
+    permission_classes = [IsAuthenticatedOrReadOnly]
