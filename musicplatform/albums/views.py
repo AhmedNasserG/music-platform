@@ -7,7 +7,7 @@ from .serializers import AlbumSerializer, SongSerializer
 
 class AlbumViewSet(ModelViewSet):
     serializer_class = AlbumSerializer
-    queryset = Album.objects.all()
+    queryset = Album.objects.filter(reviewed_by_admin=True)
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
