@@ -18,6 +18,10 @@ class AlbumViewSet(ModelViewSet):
     queryset = Album.objects.filter(reviewed_by_admin=True)
     permission_classes = [IsAuthenticatedOrReadOnly, IsArtistOrReadOnly]
 
+    def create(self, request, *args, **kwargs):
+        request.data['artist'] = request.user.artist.id
+        return super().create(request, *args, **kwargs)
+
 
 class SongViewSet(ModelViewSet):
     serializer_class = SongSerializer
