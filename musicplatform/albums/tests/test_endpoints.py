@@ -7,7 +7,6 @@ import factory
 from albums.factories import AlbumFactory
 from albums.models import Album
 from artists.factories import ArtistFactory
-from artists.models import Artist
 from users.factories import UserFactory
 
 
