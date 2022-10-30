@@ -8,10 +8,10 @@ from albums.factories import AlbumFactory
 from albums.models import Album
 from artists.factories import ArtistFactory
 from users.factories import UserFactory
+from users.models import User
 
 
 class AlbumTests(APITestCase):
-    # TODO: refactor creating the data
     data = factory.build(dict, FACTORY_CLASS=AlbumFactory)
     url = reverse('albums:index')
 
@@ -24,13 +24,13 @@ class AlbumTests(APITestCase):
         self.client.force_authenticate(user=user)
 
         response = self.client.post(self.url, {}, format='json')
-        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_album(self):
         artist = ArtistFactory()
         self.data["artist"] = artist.id
 
-        user = UserFactory()
+        user = User.objects.get(pk=artist.user.id)
         self.client.force_authenticate(user=user)
 
         response = self.client.post(self.url, self.data, format='json')
@@ -46,10 +46,13 @@ class AlbumTests(APITestCase):
         album = AlbumFactory()
         response = self.client.get(self.url, format='json')
 
+        count = response.data['count']
+        response_data = response.data['results'][0]
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['name'], album.name)
-        self.assertEqual(response.data[0]['artist'], album.artist.id)
-        self.assertEqual(response.data[0]['cost'], str(album.cost))
-        self.assertEqual(response.data[0]['reviewed_by_admin'],
+        self.assertEqual(count, 1)
+        self.assertEqual(response_data['name'], album.name)
+        self.assertEqual(response_data['artist'], album.artist.id)
+        self.assertEqual(response_data['cost'], str(album.cost))
+        self.assertEqual(response_data['reviewed_by_admin'],
                          album.reviewed_by_admin)

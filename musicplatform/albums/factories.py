@@ -15,7 +15,7 @@ class AlbumFactory(DjangoModelFactory):
         'date_time', tzinfo=timezone.get_current_timezone())
     cost = factory.Faker('pydecimal', left_digits=2,
                          right_digits=2, positive=True)
-    reviewed_by_admin = factory.Faker('boolean')
+    reviewed_by_admin = True
 
 
 class SongFactory(DjangoModelFactory):
