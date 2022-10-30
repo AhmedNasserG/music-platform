@@ -1,5 +1,6 @@
 from rest_framework.permissions import IsAuthenticatedOrReadOnly, BasePermission, SAFE_METHODS
 from rest_framework.viewsets import ModelViewSet
+from django_filters import rest_framework as filters
 
 from artists.models import Artist
 from .models import Album, Song
@@ -13,10 +14,22 @@ class IsArtistOrReadOnly(BasePermission):
         return Artist.objects.filter(user=request.user).exists()
 
 
+class AlbumFilter(filters.FilterSet):
+    cost__gte = filters.NumberFilter(field_name='cost', lookup_expr='gte')
+    cost__lte = filters.NumberFilter(field_name='cost', lookup_expr='lte')
+    name = filters.CharFilter(field_name='name', lookup_expr='iexact')
+
+    class Meta:
+        model = Album
+        fields = ['name']
+
+
 class AlbumViewSet(ModelViewSet):
     serializer_class = AlbumSerializer
     queryset = Album.objects.filter(reviewed_by_admin=True)
     permission_classes = [IsAuthenticatedOrReadOnly, IsArtistOrReadOnly]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = AlbumFilter
 
     def create(self, request, *args, **kwargs):
         request.data['artist'] = request.user.artist.id
