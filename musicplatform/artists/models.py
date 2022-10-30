@@ -12,8 +12,7 @@ class ArtistManager(models.Manager):
 class Artist(models.Model):
     stage_name = models.CharField(max_length=150, unique=True)
     social_media_link = models.URLField(max_length=250, blank=True, default='')
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
 
     objects = ArtistManager()
 

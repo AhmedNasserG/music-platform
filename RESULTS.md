@@ -3,18 +3,30 @@
 ```python
 from artists.models import Artist
 from albums.models import Album
+from users.models import User
 ```
 
 ### 1. create some artists
 
 ```python
-artist1 = Artist(stage_name="Coldplay", social_media_link="https://www.instagram.com/coldplay/?hl=en")
+user1 = User.objects.create_user(username='user1', password='password')
+user1.save()
+artist1 = Artist(stage_name="Coldplay", social_media_link="https://www.instagram.com/coldplay/?hl=en", user=user1)
 artist1.save()
-artist2 = Artist(stage_name="Kanye West", social_media_link="https://www.instagram.com/kanyewest/?hl=en")
+
+user2 = User.objects.create_user(username='user2', password='password')
+user2.save()
+artist2 = Artist(stage_name="Kanye West", social_media_link="https://www.instagram.com/kanyewest/?hl=en", user=user2)
 artist2.save()
-artist3 = Artist(stage_name="Eminem", social_media_link="https://www.instagram.com/eminem/?hl=en")
+
+user3 = User.objects.create_user(username='user3', password='password')
+user3.save()
+artist3 = Artist(stage_name="Eminem", social_media_link="https://www.instagram.com/eminem/?hl=en", user=user3)
 artist3.save()
-artist4 = Artist(stage_name="Ahmed Nasser", social_media_link="https://www.instagram.com/kanyewest/?hl=en")
+
+user4 = User.objects.create_user(username='user4', password='password')
+user4.save()
+artist4 = Artist(stage_name="Ahmed Nasser", social_media_link="https://www.instagram.com/kanyewest/?hl=en", user=user4)
 artist4.save()
 ```
 
@@ -52,8 +64,8 @@ album2 = Album(name='album 2', release_datetime=release_datetime2, cost=28.99, a
 album2.save()
 
 release_datetime3 = datetime(2010, 2, 13, 5, 35, 22, 0, tzinfo=tz)
-album2 = Album(name='album 3', release_datetime=release_datetime3, cost=30.69, artist=artist3)
-album2.save()
+album3 = Album(name='album 3', release_datetime=release_datetime3, cost=30.69, artist=artist3)
+album3.save()
 ```
 
 ### 6. get the latest released album
