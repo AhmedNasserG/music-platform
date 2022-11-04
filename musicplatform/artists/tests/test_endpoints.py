@@ -24,7 +24,6 @@ class ArtistTests(APITestCase):
         user = UserFactory()
         self.client.force_authenticate(user=user)
 
-        self.data['user'] = user.id
         response = self.client.post(self.url, self.data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(Artist.objects.count(), 1)
