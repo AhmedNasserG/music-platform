@@ -5,6 +5,7 @@ from django_filters import rest_framework as filters
 from artists.models import Artist
 from .models import Album, Song
 from .serializers import AlbumSerializer, SongSerializer
+from .tasks import send_congratulation_email
 
 
 class IsArtistOrReadOnly(BasePermission):
@@ -33,7 +34,14 @@ class AlbumViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         request.data['artist'] = request.user.artist.id
+        send_congratulation_email.delay('album')
         return super().create(request, *args, **kwargs)
+
+    # send congratulation email to artist when album is created
+    # def perform_create(self, serializer):
+    #     # serialized_album = serializer.save()
+    #     send_congratulation_email.delay('album')
+    #     return super().perform_create(serializer)
 
 
 class SongViewSet(ModelViewSet):
