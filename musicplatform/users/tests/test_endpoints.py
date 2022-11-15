@@ -2,7 +2,6 @@ from rest_framework.test import APITestCase, force_authenticate
 from rest_framework import status
 from django.urls import reverse
 
-
 from users.factories import UserFactory
 
 
@@ -19,11 +18,13 @@ class UsersTest(APITestCase):
         self.client.force_authenticate(user=user)
 
         response = self.client.get(self.url, format='json')
+        count = response.data['count']
+        response_data = response.data['results'][0]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['username'], user.username)
-        self.assertEqual(response.data[0]['email'], user.email)
-        self.assertEqual(response.data[0]['bio'], user.bio)
+        self.assertEqual(count, 1)
+        self.assertEqual(response_data['username'], user.username)
+        self.assertEqual(response_data['email'], user.email)
+        self.assertEqual(response_data['bio'], user.bio)
 
     def test_get_user(self):
         user = UserFactory()

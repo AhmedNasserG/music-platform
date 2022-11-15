@@ -10,8 +10,11 @@ from users.factories import UserFactory
 
 
 class ArtistTests(APITestCase):
-    data = factory.build(dict, FACTORY_CLASS=ArtistFactory)
     url = reverse('artists:index')
+
+    def setUp(self):
+        self.data = factory.build(dict, FACTORY_CLASS=ArtistFactory)
+        self.data['user'] = self.data['user'].id
 
     def test_unauthorized_create_artist(self):
         response = self.client.post(self.url, self.data, format='json')
@@ -42,8 +45,11 @@ class ArtistTests(APITestCase):
         artist = ArtistFactory()
         response = self.client.get(self.url, format='json')
 
+        count = response.data['count']
+        response_data = response.data['results'][0]
+
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.data), 1)
-        self.assertEqual(response.data[0]['stage_name'], artist.stage_name)
+        self.assertEqual(count, 1)
+        self.assertEqual(response_data['stage_name'], artist.stage_name)
         self.assertEqual(
-            response.data[0]['social_media_link'], artist.social_media_link)
+            response_data['social_media_link'], artist.social_media_link)
